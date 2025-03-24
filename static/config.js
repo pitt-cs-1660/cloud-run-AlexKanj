@@ -8,12 +8,11 @@
  * === Firebase Apikey and Domain ===
  */
 
-
 /**
  * Firebase configuration
  * @type {{apiKey: string, authDomain: string}}
  */
 const config = {
-  apiKey: 'AIzaSyDhwsk8AklD8Ipj26fVzYTMgrWvE8x1rgc',
-  authDomain: 'cc-spring2025.firebaseapp.com',
+  apiKey: "AIzaSyCTtPjnPSz2rRNHtpgpcNu4K-NhoXfJjVs",
+  authDomain: "cs1660-project3-454120.firebaseapp.com",
 };

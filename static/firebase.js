@@ -111,22 +111,26 @@ function toggle() {
 async function vote(team) {
   console.log(`Submitting vote for ${team}...`);
   if (firebase.auth().currentUser || authDisabled()) {
-    // Retrieve JWT to identify the user to the Identity Platform service.
-    // Returns the current token if it has not expired. Otherwise, this will
-    // refresh the token and return a new one.
     try {
       const token = await createIdToken();
+      const response = await fetch("/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Authorization": `Bearer ${token}`
+        },
+        body: `team=${team}`
+      });
 
-      /*
-       * ++++ YOUR CODE HERE ++++
-       */
-      window.alert(`Not implemented yet!`);
+      if (!response.ok) throw new Error("Server returned an error.");
 
+      const result = await response.json();
+      window.alert(result.detail);
     } catch (err) {
-      console.log(`Error when submitting vote: ${err}`);
-      window.alert('Something went wrong... Please try again!');
+      console.error("Error when submitting vote:", err);
+      window.alert("Something went wrong... Please try again!");
     }
   } else {
-    window.alert('User not signed in.');
+    window.alert("User not signed in.");
   }
 }
