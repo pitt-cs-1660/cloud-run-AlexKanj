@@ -112,3 +112,6 @@ __**note: you can run the application without authentication by adding `?auth=fa
 4. **Submit Zip file Canvas:**
 - Cloud Run Logs, Screenshots (Firestore, and Identity Platflow)
   - screenshot need to include your URL and Project ID
+
+**APPLICATION URL:**
+- https://tabs-vs-spaces-197752896646.us-central1.run.app/

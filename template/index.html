@@ -53,12 +53,57 @@
     </ul>
   </div>
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      <!-- add Event Listener "click" to the vote -->
-      // document.getElementById("voteTabs").addEventListener("click", function () {
-      //   vote("TABS");
-      // });
-    })
+document.addEventListener("DOMContentLoaded", function () {
+    const signInButton = document.getElementById("signInButton");
+    const voteTabs = document.getElementById("voteTabs");
+    const voteSpaces = document.getElementById("voteSpaces");
+    // preventing multiple votes at the same time
+    let isVoting = false;
+
+    if (typeof firebase !== "undefined" && firebase.auth) {
+      firebase.auth().onAuthStateChanged(function (user) {
+        signInButton.textContent = user ? "Sign Out" : "Sign In with Google";
+      });
+
+      signInButton.addEventListener("click", function () {
+        if (firebase.auth().currentUser) {
+          firebase.auth().signOut();
+        } else {
+          firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(console.error);
+        }
+      });
+    } else {
+      console.error("Firebase not loaded.");
+    }
+
+    function castVote(team) {
+      if (isVoting) return;
+      isVoting = true;
+
+      console.log(`Submitting vote for ${team}...`);
+      vote(team)
+        .then(() => {
+          console.log(`Vote for ${team} cast successfully`);
+          isVoting = false;
+        })
+        .catch(error => {
+          console.error("Error voting:", error);
+          isVoting = false;
+        });
+    }
+
+    // Ensure only one listener is added
+    voteTabs.replaceWith(voteTabs.cloneNode(true));
+    voteSpaces.replaceWith(voteSpaces.cloneNode(true));
+
+    document.getElementById("voteTabs").addEventListener("click", function () {
+      castVote("TABS");
+    });
+
+    document.getElementById("voteSpaces").addEventListener("click", function () {
+      castVote("SPACES");
+    });
+  });
   </script>
 </body>
 </html>
